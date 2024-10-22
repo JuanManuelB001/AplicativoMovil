@@ -6,4 +6,10 @@
     <string name="contrase_a">Contraseña</string>
     <string name="todo">TODO</string>
 
+    <!-- STRING PARA CREAR UNA CUENTA  -->
+    <string name="hint_nombre">Ingrese su nombre: </string>
+    <string name="hint_telefono">Ingrese su Telfono: </string>
+    <string name="hint_correo_electronico">Ingrese su correo Electronico: </string>
+    <string name="hint_guardar">Guardar</string>
+
 </resources>
