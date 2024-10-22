@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btncrearusuario= findViewById(R.id.btnCrearUsuario);
         btncrearusuario.setOnClickListener(this);
 
-        //BOTON INIVIAR SESION
+        //BOTON INICIAR SESION
         btniniciarsesion= findViewById(R.id.btnIniciarSesion);
         btniniciarsesion.setOnClickListener(this);
 
@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 Toast.makeText(MainActivity.this, "Error no se ha podido Crear La Base de Datos...", Toast.LENGTH_LONG).show();
             }
+            startActivity(intent);
+        }else if(view.getId() == R.id.btnIniciarSesion){
+            intent = new Intent(MainActivity.this, IniciarSesionActivity.class);
             startActivity(intent);
         }
     }
