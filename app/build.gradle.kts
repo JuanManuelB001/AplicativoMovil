@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.play.services.maps)
     //FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
