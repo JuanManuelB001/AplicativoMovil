@@ -11,5 +11,7 @@
     <string name="hint_telefono">Ingrese su Telfono: </string>
     <string name="hint_correo_electronico">Ingrese su correo Electronico: </string>
     <string name="hint_guardar">Guardar</string>
+    <string name="hint_contrasena">Ingrese su contraseña</string>
+    <string name="hint_confirmar_contrasena">Confirmar contraseña</string>
 
 </resources>
