@@ -5,13 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homeActivity">
+    tools:context=".contancoEmergenciaActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home Activity"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="124dp" />
+    <include
+        layout="@layout/activity_registrarse" />
 </androidx.constraintlayout.widget.ConstraintLayout>

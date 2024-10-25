@@ -15,7 +15,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.aplicativomovil.DataBase.DataBaseUsuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,9 +22,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +38,9 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
     private EditText txtnombre,txttelefono,txtcorreo_electronico;
     private EditText txtcontrasena,txtconfirmarcontrasena;
     private Button btnguardar;
+    private EditText txtnom;
+    public  long maxid=0;
+
 
     //VARIABLE FIREBASE
     private FirebaseFirestore db;
@@ -58,15 +64,18 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
 
         // TEXTO
-        txtnombre = findViewById(R.id.txtNombre);
+        txtnombre = findViewById(R.id.txtNombreUsuario);
         txttelefono = findViewById(R.id.txtTelefono);
         txtcorreo_electronico = findViewById(R.id.txtCorreo);
         //CONTRASENA
         txtcontrasena = findViewById(R.id.txtcontrasena);
         txtconfirmarcontrasena = findViewById(R.id.txtConfirmarContrasena);
 
+
         // BOTON
         btnguardar = findViewById(R.id.btnGuardar);
+        Button btnsiguiente;
+        btnsiguiente = findViewById(R.id.btnSiguiente);
 
         //CREAR ACTION LISTENER PARA EL BOTON
         btnguardar.setOnClickListener(this);
@@ -81,6 +90,9 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
         String contrasena = txtcontrasena.getText().toString().trim();
         String confirContrasena = txtconfirmarcontrasena.getText().toString().trim();
 
+        if(view.getId() == R.id.btnSiguiente){
+            Intent intent = new Intent();
+        }
 
         if(view.getId() == R.id.btnGuardar){//ESCUCHAR EL EVENTO BOTON GUARDAR
             //REVISAR QUE LOS EDIT TEXT NO ESTEN VACIOS
@@ -94,7 +106,6 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
                     if( contrasena.equals(confirContrasena)){
                         Toast.makeText(this, "Contraseña coincide ", Toast.LENGTH_SHORT).show();
                         crearUsuario(correo_electronico, contrasena);
-                        limpiarCampos();//LIMPIAR CAMPOS DEL EDIT TEXT
                     }else {
                         Toast.makeText(registrarse.this, "Contraseña no Coincide", Toast.LENGTH_LONG).show();
                     }
@@ -112,13 +123,17 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(registrarse.this,"Bienvenido ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(registrarse.this,"Registro Exitoso ", Toast.LENGTH_LONG).show();
                             // Ahora que el usuario fue creado, guarda sus datos en Firestore
                             postUsuario(txtnombre.getText().toString().trim(), txttelefono.getText().toString().trim(), correo);
                             Intent intent = new Intent(registrarse.this, MainActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(registrarse.this, "Error: no se pudo crear el usuario", Toast.LENGTH_LONG).show();
+                            if(cont.length() < 6){
+                                Toast.makeText(registrarse.this, "Error:Ingrese una contraseña valida", Toast.LENGTH_LONG).show();
+                                Toast.makeText(registrarse.this,"Minimo 6 Caracteres.",Toast.LENGTH_LONG).show();
+                            }
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -138,7 +153,6 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
         user.put("Telefono", telefono);
         user.put("Correo Electronico",correoElectronico);
 
-
         //AGREGAR VALORES A LA BASE DE DATOS
         db.collection("Usuarios")
                 .add(user)
@@ -151,7 +165,7 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(registrarse.this, "Fallo al guar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registrarse.this, "Fallo al guardar", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -162,5 +176,7 @@ public class registrarse extends AppCompatActivity  implements View.OnClickListe
         txtnombre.setText("");
         txttelefono.setText("");
         txtcorreo_electronico.setText("");
+        txtcontrasena.setText("");
+        txtconfirmarcontrasena.setText("");
     }
 }
