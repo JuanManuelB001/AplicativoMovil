@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    //FIREBASE
+    //id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,7 +45,19 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    //FIREBASE
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    //FIREBASE AUTENTICATION
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+    implementation(libs.firebase.database)
     implementation(libs.play.services.location)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
