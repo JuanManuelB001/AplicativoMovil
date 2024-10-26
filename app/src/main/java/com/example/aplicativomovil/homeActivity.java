@@ -1,6 +1,9 @@
 package com.example.aplicativomovil;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,8 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class homeActivity extends AppCompatActivity {
-
+public class homeActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button btnmapa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +23,20 @@ public class homeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //INICIALIZAR BOTON MAPA
+        btnmapa = findViewById(R.id.btnMapa);
+
+        //BUTTON LISTENER
+        btnmapa.setOnClickListener(homeActivity.this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent();
+        if(view.getId() == R.id.btnMapa){
+            intent = new Intent(homeActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
     }
 }

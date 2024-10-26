@@ -15,4 +15,7 @@
     <string name="hint_contrasena">Ingrese su contraseña</string>
     <string name="hint_confirmar_contrasena">Confirmar contraseña</string>
 
+
+    <!--IR AL MAPA -->
+    <string name="hint_mapa">Ir al Mapa</string>
 </resources>

@@ -19,7 +19,6 @@ import com.example.aplicativomovil.DataBase.dataBaseHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btnmapa;
     private Button btncrearusuario;
     private Button btniniciarsesion;
 
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        //BOTON IR AL MAPA
-        btnmapa = findViewById(R.id.btnMapa);
-        btnmapa.setOnClickListener(this);
+
 
         //BOTON USUARIO
         btncrearusuario= findViewById(R.id.btnCrearUsuario);
@@ -46,19 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //BOTON INICIAR SESION
         btniniciarsesion= findViewById(R.id.btnIniciarSesion);
         btniniciarsesion.setOnClickListener(this);
-
-
-
+        
     }
-
     @Override
     public void onClick(View view) {
         Intent intent = new Intent();
-        if(view.getId() == R.id.btnMapa){
-            intent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivity(intent);
-        }
-        else if (view.getId() == R.id.btnCrearUsuario) {
+         if (view.getId() == R.id.btnCrearUsuario) {
             try{
             intent = new Intent(MainActivity.this, registrarse.class);
             dataBaseHelper dbHelper = new dataBaseHelper(MainActivity.this);
