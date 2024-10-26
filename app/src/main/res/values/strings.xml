@@ -18,4 +18,14 @@
 
     <!--IR AL MAPA -->
     <string name="hint_mapa">Ir al Mapa</string>
+
+    <!--INICIAR SESION ACTIVITY -->
+    <string name="hint_iniciarSesion">Iniciar Sesión</string>
+    <string name="hint_RestaurarContrasena">Restaurar Contraseña</string>
+    <string name="hint_registrarse">Registrarse</string>
+
+    <!-- RESTAURAR CONTRASENA -->
+    <string name="hint_nuevaContrasena">Escriba Nueva Contraseña</string>
+    <string name="hint_confirNuevaContrasena">Vuelva ha Escribir Contraseña</string>
+    <string name="hint_aceptar">Aceptar</string>
 </resources>

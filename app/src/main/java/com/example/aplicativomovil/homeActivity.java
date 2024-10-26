@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class homeActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button btnmapa;
+    private Button btnmapa,btnrestaurarContrasena;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +26,12 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
 
         //INICIALIZAR BOTON MAPA
         btnmapa = findViewById(R.id.btnMapa);
-
+        btnrestaurarContrasena = findViewById(R.id.btnRestaurarContrasena);
         //BUTTON LISTENER
         btnmapa.setOnClickListener(homeActivity.this);
+        btnrestaurarContrasena.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -37,6 +40,10 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         if(view.getId() == R.id.btnMapa){
             intent = new Intent(homeActivity.this, MapsActivity.class);
             startActivity(intent);
+        }else if(view.getId() == R.id.btnRestaurarContrasena){
+            intent = new Intent(homeActivity.this, restaurarContrasenaActivity.class);
+            startActivity(intent);
+
         }
     }
 }
