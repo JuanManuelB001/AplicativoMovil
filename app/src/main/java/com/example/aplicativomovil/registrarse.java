@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.aplicativomovil.entidades.Usuarios;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,10 +65,8 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
         txtcontrasena = findViewById(R.id.txtcontrasena);
         txtconfirmarcontrasena = findViewById(R.id.txtConfirmarContrasena);
 
-        // BOTON
+        //CONFIGURACION BOTON GUARDAR
         btnguardar = findViewById(R.id.btnGuardar);
-        Button btnsiguiente = findViewById(R.id.btnSiguiente);
-
         // CREAR ACTION LISTENER PARA EL BOTON
         btnguardar.setOnClickListener(this);
     }
@@ -81,10 +80,7 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
         String contrasena = txtcontrasena.getText().toString().trim();
         String confirContrasena = txtconfirmarcontrasena.getText().toString().trim();
 
-        if (view.getId() == R.id.btnSiguiente) {
-            Intent intent = new Intent();
-            // Agrega la lógica para la siguiente actividad aquí
-        }
+
 
         if (view.getId() == R.id.btnGuardar) { // ESCUCHAR EL EVENTO BOTON GUARDAR
             // REVISAR QUE LOS EDIT TEXT NO ESTEN VACIOS
@@ -106,6 +102,12 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
     }
 
     private void crearUsuario(String correo, String cont) {
+        // CONVERTIR VALORES A STRING DE EDIT TEXT
+        String nombre = txtnombre.getText().toString().trim();
+        String telefono = txttelefono.getText().toString().trim();
+        String correo_electronico = txtcorreo_electronico.getText().toString().trim();
+        String contrasena = txtcontrasena.getText().toString().trim();
+        String confirContrasena = txtconfirmarcontrasena.getText().toString().trim();
         mAuth.createUserWithEmailAndPassword(correo, cont)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -113,10 +115,14 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(registrarse.this, "Registro Exitoso", Toast.LENGTH_LONG).show();
-                            // Ahora que el usuario fue creado, guarda sus datos en Firestore
-                            postUsuario(txtnombre.getText().toString().trim(), txttelefono.getText().toString().trim(), correo);
-                            Intent intent = new Intent(registrarse.this, MainActivity.class);
+                            Intent intent = new Intent(registrarse.this, contancoEmergenciaActivity.class);
+                            //PASAR LOS DATOS A OTRA VIEW
+                            intent.putExtra("nombreUsuario", nombre);
+                            intent.putExtra("telefono", telefono);
+                            intent.putExtra("correo", correo_electronico);
+                            //IR AL VIEW
                             startActivity(intent);
+
                         } else {
                             if (cont.length() < 6) {
                                 Toast.makeText(registrarse.this, "Error: Ingrese una contraseña válida", Toast.LENGTH_LONG).show();
@@ -134,57 +140,6 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
     public interface CountCallback {
         void onCountReady(int count);
     }
-
-    private void totalDatos(CountCallback callback) {
-        db.collection("Usuarios").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int count = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            count++;
-                        }
-                        Toast.makeText(registrarse.this, "Total documentos: " + count, Toast.LENGTH_SHORT).show();
-                        callback.onCountReady(count);  // Llama al callback con el conteo
-                    } else {
-                        Log.w("Error", "Error obteniendo documentos.", task.getException());
-                        callback.onCountReady(0);  // En caso de error, retorna 0
-                    }
-                });
-    }
-
-    private void postUsuario(String nombre, String telefono, String correoElectronico) {
-        Map<String, Object> user = new HashMap<>();
-        Map<String, Object> contacto_emergencia = new HashMap<>();
-        // AGREGAR VALORES AL MAPA CLAVE-VALOR
-        user.put("Nombre", nombre);
-        user.put("Telefono", telefono);
-        user.put("Correo Electronico", correoElectronico);
-        user.put("Contacto Emergencia", contacto_emergencia);
-
-        totalDatos(count -> {
-            // Puedes usar 'count' para establecer un ID o cualquier lógica
-            String documentId = "usuario_" + count;  // Ejemplo: crear un ID basado en el conteo
-
-            // AGREGAR VALORES A LA BASE DE DATOS con el ID específico
-            db.collection("Usuarios")
-                    .document(documentId)  // Usa el ID específico
-                    .set(user)  // Usar 'set' en lugar de 'add'
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(registrarse.this, "Éxito al guardar en la base de datos", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(registrarse.this, "Fallo al guardar", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        });
-    }
-
-
     private void limpiarCampos() {
         txtnombre.setText("");
         txttelefono.setText("");

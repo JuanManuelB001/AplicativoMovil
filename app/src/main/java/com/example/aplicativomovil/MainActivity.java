@@ -49,22 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Intent intent = new Intent();
          if (view.getId() == R.id.btnCrearUsuario) {
-            try{
             intent = new Intent(MainActivity.this, registrarse.class);
-            dataBaseHelper dbHelper = new dataBaseHelper(MainActivity.this);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            //CREACION BASE DE DATOS
-            if (db != null) {
-                Toast.makeText(MainActivity.this, "La Base de Datos Se Ha Creado ", Toast.LENGTH_LONG).show();
-
-                } else {
-                    Toast.makeText(MainActivity.this, "Error no se ha podido Crear La Base de Datos...", Toast.LENGTH_LONG).show();
-                }
-                startActivity(intent);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-
-            }
+            startActivity(intent);
 
         }else if(view.getId() == R.id.btnIniciarSesion){
             intent = new Intent(MainActivity.this, IniciarSesionActivity.class);
