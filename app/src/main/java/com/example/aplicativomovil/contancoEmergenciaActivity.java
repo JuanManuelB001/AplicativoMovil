@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.aplicativomovil.databinding.ContactoEmergenciaBinding;
 import com.example.aplicativomovil.entidades.Usuarios;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +37,8 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
     @SuppressLint("RestrictedApi")
     private FirebaseAuth mAuth;
 
+    private EditText txtnombreContacto, txttelefonoContacto, txtcorreoContacto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -46,26 +49,57 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // INICIALIZAR FIREBASE
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        //INSTANCIAR VALORES DEL EDITTEXT DE ACTIVITY_REGISTRARSE
-        String getNombre = getIntent().getStringExtra("nombreUsuario");
-        String getTelefono = getIntent().getStringExtra("telefono");
-        String getCorreo = getIntent().getStringExtra("correo");
+        //CONFIGURACION EDIT-TEXT
+        txtnombreContacto = findViewById(R.id.txtNombreContacto);
+        txttelefonoContacto = findViewById(R.id.txtTelefonoContacto);
+        txtcorreoContacto = findViewById(R.id.txtEmailContacto);
 
-        Toast.makeText(contancoEmergenciaActivity.this,getTelefono+ " "+ getCorreo , Toast.LENGTH_SHORT).show();
 
+        //CONFIGURACION BOTON
+        btnGuardar = findViewById(R.id.btnGuardar);
+        btnGuardar.setOnClickListener(contancoEmergenciaActivity.this);
     }
 
     @Override
     public void onClick(View view) {
 
         if(view.getId() == R.id.btnGuardar){
-            totalDatos();
+            if(!validar()){
+                Toast.makeText(contancoEmergenciaActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
+            }else{
+                btnGuardar.setEnabled(false);
+                //INSTANCIAR VALORES DEL EDITTEXT DE ACTIVITY_REGISTRARSE
+                String getNombre = getIntent().getStringExtra("nombreUsuario");
+                String getTelefono = getIntent().getStringExtra("telefono");
+                String getCorreo = getIntent().getStringExtra("correo");
+                //VALORES CONTACTO DE EMERGENCIA
+                String nombreContacto = txtnombreContacto.getText().toString().trim();
+                String telefonoContacto = txttelefonoContacto.getText().toString().trim();
+                String correoContacto = txtcorreoContacto.getText().toString().trim();
 
+                //IR AL METODO PARA GUARDAR LOS DATOS EN LA BASE DE FIREBASE
+                postUsuario(getNombre, getTelefono, getCorreo,nombreContacto, telefonoContacto,correoContacto);
+            }
         }
+    }
+    public boolean validar(){
+        String nombre = txtnombreContacto.getText().toString().trim();
+        String telefono = txttelefonoContacto.getText().toString().trim();
+        String correo = txtcorreoContacto.getText().toString().trim();
+
+        if(nombre.isEmpty() || telefono.isEmpty() ||correo.isEmpty()){
+            return false;
+        }else{
+            return  true;
+        }
+    }
+    public interface CountCallback {
+        void onCountReady(int count);
     }
     private void totalDatos(registrarse.CountCallback callback) {
         db.collection("Usuarios").get()
@@ -75,7 +109,7 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             count++;
                         }
-                        Toast.makeText(contancoEmergenciaActivity.this, "Total documentos: " + count, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(contancoEmergenciaActivity.this, "Total documentos: " + count, Toast.LENGTH_SHORT).show();
                         callback.onCountReady(count);  // Llama al callback con el conteo
                     } else {
                         Log.w("Error", "Error obteniendo documentos.", task.getException());
@@ -84,7 +118,7 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                 });
     }
 
-    private void postUsuario(String nombre, String telefono, String correoElectronico) {
+    private void postUsuario(String nombre, String telefono, String correoElectronico,String nombreContacto,String telefonoContacto,String correoContacto) {
         Map<String, Object> user = new HashMap<>();
         Map<String, Object> contacto_emergencia = new HashMap<>();
         // AGREGAR VALORES AL MAPA CLAVE-VALOR
@@ -93,10 +127,10 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
         user.put("Correo Electronico", correoElectronico);
         user.put("Contacto Emergencia", contacto_emergencia);
 
-        //CREAR USUARIO
-        Usuarios usuario = new Usuarios(nombre,telefono,correoElectronico);
-
-
+        //GUARDAR LOS DATOS DEL CONTACTO DE EMERGENCIA
+        contacto_emergencia.put("Nombre Contacto",nombreContacto);
+        contacto_emergencia.put("Telefono Contacto",telefonoContacto);
+        contacto_emergencia.put("Correo Contacto",correoContacto);
         totalDatos(count -> {
             // Puedes usar 'count' para establecer un ID o cualquier lógica
             String documentId = "usuario_" + count;  // Ejemplo: crear un ID basado en el conteo
@@ -108,9 +142,10 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Intent intent = new Intent(contancoEmergenciaActivity.this, contancoEmergenciaActivity.class);
-                            intent.putExtra("nombreUsuario",nombre);
+                            Toast.makeText(contancoEmergenciaActivity.this, "Se ha registrado el Usuario", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(contancoEmergenciaActivity.this, MainActivity.class);
                             startActivity(intent);
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

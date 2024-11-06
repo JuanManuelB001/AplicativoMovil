@@ -61,6 +61,7 @@
 
             <EditText
                 android:id="@+id/txtcontrasena"
+                android:hint="@string/hint_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -74,6 +75,7 @@
 
             <EditText
                 android:id="@+id/txtConfirmarContrasena"
+                android:hint="@string/hint_confirmar_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"

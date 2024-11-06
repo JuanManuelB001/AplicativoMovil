@@ -84,12 +84,13 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
 
         if (view.getId() == R.id.btnGuardar) { // ESCUCHAR EL EVENTO BOTON GUARDAR
             // REVISAR QUE LOS EDIT TEXT NO ESTEN VACIOS
-            if (nombre.isEmpty() && telefono.isEmpty() && correo_electronico.isEmpty()) {
+            if (nombre.isEmpty() || telefono.isEmpty() || correo_electronico.isEmpty()) {
                 Toast.makeText(this, "Por favor, ingrese todos los datos", Toast.LENGTH_SHORT).show();
             } else {
                 if (!correo_electronico.isEmpty()) {
                     if (contrasena.equals(confirContrasena)) {
-                        Toast.makeText(this, "Contraseña coincide", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Espere un Momento", Toast.LENGTH_SHORT).show();
+                        btnguardar.setEnabled(false);
                         crearUsuario(correo_electronico, contrasena);
                     } else {
                         Toast.makeText(registrarse.this, "Contraseña no Coincide", Toast.LENGTH_LONG).show();
@@ -114,12 +115,12 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(registrarse.this, "Registro Exitoso", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(registrarse.this, contancoEmergenciaActivity.class);
                             //PASAR LOS DATOS A OTRA VIEW
                             intent.putExtra("nombreUsuario", nombre);
                             intent.putExtra("telefono", telefono);
                             intent.putExtra("correo", correo_electronico);
+
                             //IR AL VIEW
                             startActivity(intent);
 
@@ -127,6 +128,7 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                             if (cont.length() < 6) {
                                 Toast.makeText(registrarse.this, "Error: Ingrese una contraseña válida", Toast.LENGTH_LONG).show();
                                 Toast.makeText(registrarse.this, "Mínimo 6 Caracteres.", Toast.LENGTH_LONG).show();
+                                btnguardar.setEnabled(true);
                             }
                         }
                     }
@@ -134,6 +136,7 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(registrarse.this, "Ha ocurrido un error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        btnguardar.setEnabled(true);
                     }
                 });
     }
