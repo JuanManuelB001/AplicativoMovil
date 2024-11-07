@@ -1,4 +1,4 @@
-package com.example.aplicativomovil;
+package com.example.aplicativomovil.ContactoEmergencia;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,15 +16,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.aplicativomovil.databinding.ContactoEmergenciaBinding;
-import com.example.aplicativomovil.entidades.Usuarios;
+import com.example.aplicativomovil.MainActivity;
+import com.example.aplicativomovil.R;
+import com.example.aplicativomovil.entidades.ContactoEmergencia;
+import com.example.aplicativomovil.registrarse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class contancoEmergenciaActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -36,7 +39,8 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
     //AUTENTIFICACION CUENTA
     @SuppressLint("RestrictedApi")
     private FirebaseAuth mAuth;
-
+    public String documentId;
+    private Button btnAgregar;
     private EditText txtnombreContacto, txttelefonoContacto, txtcorreoContacto;
 
     @Override
@@ -59,6 +63,9 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
         txttelefonoContacto = findViewById(R.id.txtTelefonoContacto);
         txtcorreoContacto = findViewById(R.id.txtEmailContacto);
 
+        //BOTON AGREGAR
+        btnAgregar = findViewById(R.id.btnAgregar);
+        btnAgregar.setOnClickListener(this);
 
         //CONFIGURACION BOTON
         btnGuardar = findViewById(R.id.btnGuardar);
@@ -85,6 +92,9 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                 //IR AL METODO PARA GUARDAR LOS DATOS EN LA BASE DE FIREBASE
                 postUsuario(getNombre, getTelefono, getCorreo,nombreContacto, telefonoContacto,correoContacto);
             }
+        }else if(view.getId() == R.id.btnAgregar){
+            Toast.makeText(contancoEmergenciaActivity.this,"Número "+documentId,Toast.LENGTH_SHORT).show();
+            agregarNuevoContactoEmergencia("usuario_3", "Pedro", "555", "pedro@example.com");
         }
     }
     public boolean validar(){
@@ -120,20 +130,32 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
 
     private void postUsuario(String nombre, String telefono, String correoElectronico,String nombreContacto,String telefonoContacto,String correoContacto) {
         Map<String, Object> user = new HashMap<>();
-        Map<String, Object> contacto_emergencia = new HashMap<>();
+        List<Map<String, Object>> contacto_emergencia = new ArrayList<>();
+        ContactoEmergencia cont = new ContactoEmergencia(nombreContacto, telefonoContacto, correoContacto);
+        ContactoEmergencia cont2 = new ContactoEmergencia("juanito","333", "jaunit@hotmail.com");
+
+        //GUARDAR LOS DATOS DEL CONTACTO DE EMERGENCIA
+        Map<String, Object> contacto = new HashMap<>();
+        contacto.put("NombreContacto", cont.getNombreContacto());
+        contacto.put("TelefonoContacto", cont.getTelefonoContacto());
+        contacto.put("CorreoContacto", cont.getCorreoContacto());
+        //SEGUNDA ARREGACIÓN
+        Map<String, Object> contacto2 = new HashMap<>();
+        contacto2.put("NombreContacto", cont2.getNombreContacto());
+        contacto2.put("TelefonoContacto", cont2.getTelefonoContacto());
+        contacto2.put("CorreoContacto", cont2.getCorreoContacto());
+
+        contacto_emergencia.add(contacto);
+        contacto_emergencia.add(contacto2);
+
         // AGREGAR VALORES AL MAPA CLAVE-VALOR
         user.put("Nombre", nombre);
         user.put("Telefono", telefono);
         user.put("Correo Electronico", correoElectronico);
         user.put("Contacto Emergencia", contacto_emergencia);
-
-        //GUARDAR LOS DATOS DEL CONTACTO DE EMERGENCIA
-        contacto_emergencia.put("Nombre Contacto",nombreContacto);
-        contacto_emergencia.put("Telefono Contacto",telefonoContacto);
-        contacto_emergencia.put("Correo Contacto",correoContacto);
         totalDatos(count -> {
             // Puedes usar 'count' para establecer un ID o cualquier lógica
-            String documentId = "usuario_" + count;  // Ejemplo: crear un ID basado en el conteo
+            documentId = "usuario_" + count;  // Ejemplo: crear un ID basado en el conteo
 
             // AGREGAR VALORES A LA BASE DE DATOS con el ID específico
             db.collection("Usuarios")
@@ -145,7 +167,6 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                             Toast.makeText(contancoEmergenciaActivity.this, "Se ha registrado el Usuario", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(contancoEmergenciaActivity.this, MainActivity.class);
                             startActivity(intent);
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -156,4 +177,47 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                     });
         });
     }
+
+
+    //////////
+    // Función para agregar un nuevo contacto de emergencia a un usuario existente
+    private void agregarNuevoContactoEmergencia(String documentId, String nombreContacto, String telefonoContacto, String correoContacto) {
+        // Crear el nuevo contacto a agregar
+        Map<String, Object> nuevoContacto = new HashMap<>();
+        nuevoContacto.put("NombreContacto", nombreContacto);
+        nuevoContacto.put("TelefonoContacto", telefonoContacto);
+        nuevoContacto.put("CorreoContacto", correoContacto);
+
+        // Obtener el documento del usuario
+        db.collection("Usuarios").document(documentId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Leer la lista actual de contactos de emergencia
+                        List<Map<String, Object>> contactosActuales = (List<Map<String, Object>>) documentSnapshot.get("Contacto Emergencia");
+                        if (contactosActuales == null) {
+                            contactosActuales = new ArrayList<>();
+                        }
+
+                        // Agregar el nuevo contacto a la lista
+                        contactosActuales.add(nuevoContacto);
+
+                        // Actualizar el campo "Contacto Emergencia" en Firestore
+                        db.collection("Usuarios").document(documentId)
+                                .update("Contacto Emergencia", contactosActuales)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(contancoEmergenciaActivity.this, "Contacto de emergencia agregado", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(contancoEmergenciaActivity.this, "Error al actualizar contactos", Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        Toast.makeText(contancoEmergenciaActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(contancoEmergenciaActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
+                });
+    }
+    ///////////
 }
