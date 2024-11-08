@@ -99,8 +99,17 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                 agregarNuevoContactoEmergencia(getId,nombreContacto,telefonoContacto,correoContacto);
             }
         }else if(view.getId() == R.id.btnAgregar){
-            Toast.makeText(contancoEmergenciaActivity.this,"Número "+getId,Toast.LENGTH_SHORT).show();
-            agregarNuevoContactoEmergencia(getId, "Pedro", "555", "pedro@example.com");
+            String getNombre = txtnombreContacto.getText().toString().trim();
+            String getTelefono = txttelefonoContacto.getText().toString().trim();
+            String getCorreo = txtcorreoContacto.getText().toString().trim();
+
+            if(getNombre.isEmpty() || getTelefono.isEmpty() || getCorreo.isEmpty()){
+                Toast.makeText(contancoEmergenciaActivity.this,"Por favor ingrese todos los valores", Toast.LENGTH_SHORT).show();
+            }else{
+                agregarNuevoContactoEmergencia(getId, getNombre, getTelefono,getCorreo);
+                limpiarCampos();
+            }
+
         }
     }
     public boolean validar(){
@@ -153,5 +162,10 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                 .addOnFailureListener(e -> {
                     Toast.makeText(contancoEmergenciaActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
                 });
+    }
+    public void limpiarCampos(){
+        txtnombreContacto.setText("");
+        txttelefonoContacto.setText("");
+        txtcorreoContacto.setText("");
     }
 }

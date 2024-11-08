@@ -30,5 +30,7 @@
     <string name="hint_confirNuevaContrasena">Vuelva ha Escribir Contraseña</string>
     <string name="hint_aceptar">Aceptar</string>
 
+    <!--CONTACTO EMERGENCIA -->
+    <string name="hint_agregarContacto">Agregar Nuevo Contacto</string>
 
 </resources>

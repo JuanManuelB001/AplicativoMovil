@@ -160,16 +160,6 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
     private void postUsuario(String nombre, String telefono, String correoElectronico) {
         Map<String, Object> user = new HashMap<>();
         List<Map<String, Object>> contacto_emergencia = new ArrayList<>();
-        ContactoEmergencia cont2 = new ContactoEmergencia("juanito","333", "jaunit@hotmail.com");
-
-
-        //SEGUNDA ARREGACIÓN
-        Map<String, Object> contacto2 = new HashMap<>();
-        contacto2.put("NombreContacto", cont2.getNombreContacto());
-        contacto2.put("TelefonoContacto", cont2.getTelefonoContacto());
-        contacto2.put("CorreoContacto", cont2.getCorreoContacto());
-
-        contacto_emergencia.add(contacto2);
 
         // AGREGAR VALORES AL MAPA CLAVE-VALOR
         user.put("Nombre", nombre);
@@ -178,7 +168,7 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
         user.put("Contacto Emergencia", contacto_emergencia);
         totalDatos(count -> {
             // Puedes usar 'count' para establecer un ID o cualquier lógica
-            documentId = "usuario_" + count+1;  // Ejemplo: crear un ID basado en el conteo
+            documentId = "usuario_" + count;  // Ejemplo: crear un ID basado en el conteo
 
             // AGREGAR VALORES A LA BASE DE DATOS con el ID específico
             db.collection("Usuarios")
