@@ -61,8 +61,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             // Añade el marcador después de obtener la ubicación
                             LatLng currentLocation = new LatLng(textoLatitud, textoLongitud);
+                            float zoomLevel = 15.0f;
+
                             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel));
 
                             Toast.makeText(MapsActivity.this, "Latitud: " + textoLatitud, Toast.LENGTH_LONG).show();
                             Toast.makeText(MapsActivity.this, "Longitud: " + textoLongitud, Toast.LENGTH_LONG).show();
