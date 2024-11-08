@@ -23,7 +23,7 @@
             android:name=".restaurarContrasenaActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactoEmergencia.contancoEmergenciaActivity"
+            android:name=".ContactoEmergencia.contactoEmergenciaActivity"
             android:exported="false" />
         <activity
             android:name=".homeActivity"

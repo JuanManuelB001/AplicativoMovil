@@ -1,37 +1,28 @@
 package com.example.aplicativomovil.ContactoEmergencia;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.aplicativomovil.MainActivity;
 import com.example.aplicativomovil.R;
-import com.example.aplicativomovil.entidades.ContactoEmergencia;
-import com.example.aplicativomovil.registrarse;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class contancoEmergenciaActivity extends AppCompatActivity  implements View.OnClickListener{
+public class contactoEmergenciaActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private Button btnGuardar;
     //VARIABLE FIREBASE
@@ -72,10 +63,10 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
 
         //CONFIGURACION BOTON
         btnGuardar = findViewById(R.id.btnGuardar);
-        btnGuardar.setOnClickListener(contancoEmergenciaActivity.this);
+        btnGuardar.setOnClickListener(contactoEmergenciaActivity.this);
 
 
-        Toast.makeText(contancoEmergenciaActivity.this,"numero--> "+getId,Toast.LENGTH_SHORT).show();
+        Toast.makeText(contactoEmergenciaActivity.this,"numero--> "+getId,Toast.LENGTH_SHORT).show();
 
     }
 
@@ -84,11 +75,11 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
 
         if(view.getId() == R.id.btnGuardar){
             if(!validar()){
-                Toast.makeText(contancoEmergenciaActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contactoEmergenciaActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
             }else{
                 btnGuardar.setEnabled(false);
 
-                Toast.makeText(contancoEmergenciaActivity.this, "id "+getId,Toast.LENGTH_SHORT).show();
+                Toast.makeText(contactoEmergenciaActivity.this, "id "+getId,Toast.LENGTH_SHORT).show();
 
                 //VALORES CONTACTO DE EMERGENCIA
                 String nombreContacto = txtnombreContacto.getText().toString().trim();
@@ -104,7 +95,7 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
             String getCorreo = txtcorreoContacto.getText().toString().trim();
 
             if(getNombre.isEmpty() || getTelefono.isEmpty() || getCorreo.isEmpty()){
-                Toast.makeText(contancoEmergenciaActivity.this,"Por favor ingrese todos los valores", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contactoEmergenciaActivity.this,"Por favor ingrese todos los valores", Toast.LENGTH_SHORT).show();
             }else{
                 agregarNuevoContactoEmergencia(getId, getNombre, getTelefono,getCorreo);
                 limpiarCampos();
@@ -150,17 +141,17 @@ public class contancoEmergenciaActivity extends AppCompatActivity  implements Vi
                         db.collection("Usuarios").document(documentId)
                                 .update("Contacto Emergencia", contactosActuales)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(contancoEmergenciaActivity.this, "Contacto de emergencia agregado", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(contactoEmergenciaActivity.this, "Contacto de emergencia agregado", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(contancoEmergenciaActivity.this, "Error al actualizar contactos", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(contactoEmergenciaActivity.this, "Error al actualizar contactos", Toast.LENGTH_SHORT).show();
                                 });
                     } else {
-                        Toast.makeText(contancoEmergenciaActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(contactoEmergenciaActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(contancoEmergenciaActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(contactoEmergenciaActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
                 });
     }
     public void limpiarCampos(){
