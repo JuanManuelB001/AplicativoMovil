@@ -3,6 +3,7 @@ package com.example.aplicativomovil;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,20 +17,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.aplicativomovil.ContactoEmergencia.contancoEmergenciaActivity;
+import com.example.aplicativomovil.entidades.ContactoEmergencia;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class registrarse extends AppCompatActivity implements View.OnClickListener {
 
     private EditText txtnombre, txttelefono, txtcorreo_electronico;
     private EditText txtcontrasena, txtconfirmarcontrasena;
     private Button btnguardar;
-
+    public String documentId;
     //VARIABLE FIREBASE
     private FirebaseFirestore db;
     //AUTENTIFICACION CUENTA
@@ -108,14 +117,9 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(registrarse.this, contancoEmergenciaActivity.class);
                             //PASAR LOS DATOS A OTRA VIEW
-                            intent.putExtra("nombreUsuario", nombre);
-                            intent.putExtra("telefono", telefono);
-                            intent.putExtra("correo", correo_electronico);
+                            postUsuario(nombre, telefono, correo_electronico);
 
-                            //IR AL VIEW
-                            startActivity(intent);
 
                         } else {
                             if (cont.length() < 6) {
@@ -135,6 +139,68 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
     }
     public interface CountCallback {
         void onCountReady(int count);
+    }
+    private void totalDatos(registrarse.CountCallback callback) {
+        db.collection("Usuarios").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int count = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            count++;
+                        }
+                        //Toast.makeText(contancoEmergenciaActivity.this, "Total documentos: " + count, Toast.LENGTH_SHORT).show();
+                        callback.onCountReady(count);  // Llama al callback con el conteo
+                    } else {
+                        Log.w("Error", "Error obteniendo documentos.", task.getException());
+                        callback.onCountReady(0);  // En caso de error, retorna 0
+                    }
+                });
+    }
+
+    private void postUsuario(String nombre, String telefono, String correoElectronico) {
+        Map<String, Object> user = new HashMap<>();
+        List<Map<String, Object>> contacto_emergencia = new ArrayList<>();
+        ContactoEmergencia cont2 = new ContactoEmergencia("juanito","333", "jaunit@hotmail.com");
+
+
+        //SEGUNDA ARREGACIÓN
+        Map<String, Object> contacto2 = new HashMap<>();
+        contacto2.put("NombreContacto", cont2.getNombreContacto());
+        contacto2.put("TelefonoContacto", cont2.getTelefonoContacto());
+        contacto2.put("CorreoContacto", cont2.getCorreoContacto());
+
+        contacto_emergencia.add(contacto2);
+
+        // AGREGAR VALORES AL MAPA CLAVE-VALOR
+        user.put("Nombre", nombre);
+        user.put("Telefono", telefono);
+        user.put("Correo Electronico", correoElectronico);
+        user.put("Contacto Emergencia", contacto_emergencia);
+        totalDatos(count -> {
+            // Puedes usar 'count' para establecer un ID o cualquier lógica
+            documentId = "usuario_" + count+1;  // Ejemplo: crear un ID basado en el conteo
+
+            // AGREGAR VALORES A LA BASE DE DATOS con el ID específico
+            db.collection("Usuarios")
+                    .document(documentId)  // Usa el ID específico
+                    .set(user)  // Usar 'set' en lugar de 'add'
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //Toast.makeText(registrarse.this, "Se ha registrado el Usuario", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(registrarse.this, contancoEmergenciaActivity.class);
+                            btnguardar.setEnabled(true);
+                            intent.putExtra("id", documentId);
+                            startActivity(intent);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(registrarse.this, "Fallo al guardar", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
     }
     private void limpiarCampos() {
         txtnombre.setText("");
