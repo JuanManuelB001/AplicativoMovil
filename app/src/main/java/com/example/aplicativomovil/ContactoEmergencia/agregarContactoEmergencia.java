@@ -85,6 +85,9 @@ public class agregarContactoEmergencia extends AppCompatActivity implements View
         }
     }
 
+
+
+
     public void agregarNuevoContacto(String getEmail, String nombre, String telefono, String correo) {
         // Crear un mapa para el nuevo contacto de emergencia
         Map<String, Object> nuevoContacto = new HashMap<>();
@@ -128,7 +131,6 @@ public class agregarContactoEmergencia extends AppCompatActivity implements View
                     Toast.makeText(this, "Error en la búsqueda", Toast.LENGTH_SHORT).show();
                 });
     }
-
     public String optenerEmail(FirebaseUser user){
         String getEmail;
         getEmail = user.getEmail();

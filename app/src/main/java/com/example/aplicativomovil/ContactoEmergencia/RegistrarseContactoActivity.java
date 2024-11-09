@@ -1,6 +1,7 @@
 package com.example.aplicativomovil.ContactoEmergencia;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.aplicativomovil.MainActivity;
 import com.example.aplicativomovil.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,23 +74,9 @@ public class RegistrarseContactoActivity extends AppCompatActivity  implements V
 
     @Override
     public void onClick(View view) {
-
         if(view.getId() == R.id.btnGuardar){
-            if(!validar()){
-                Toast.makeText(RegistrarseContactoActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
-            }else{
-                btnGuardar.setEnabled(false);
+            contactoIsEmpty(getId);
 
-                //Toast.makeText(contactoEmergenciaActivity.this, "id "+getId,Toast.LENGTH_SHORT).show();
-
-                //VALORES CONTACTO DE EMERGENCIA
-                String nombreContacto = txtnombreContacto.getText().toString().trim();
-                String telefonoContacto = txttelefonoContacto.getText().toString().trim();
-                String correoContacto = txtcorreoContacto.getText().toString().trim();
-
-                //IR AL METODO PARA GUARDAR LOS DATOS EN LA BASE DE FIREBASE
-                agregarNuevoContactoEmergencia(getId,nombreContacto,telefonoContacto,correoContacto);
-            }
         }else if(view.getId() == R.id.btnAgregar){
             String getNombre = txtnombreContacto.getText().toString().trim();
             String getTelefono = txttelefonoContacto.getText().toString().trim();
@@ -103,6 +91,30 @@ public class RegistrarseContactoActivity extends AppCompatActivity  implements V
 
         }
     }
+
+    private void contactoIsEmpty(String documentId) {
+        // Obtener el documento del usuario
+        db.collection("Usuarios").document(documentId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Leer la lista actual de contactos de emergencia
+                        List<Map<String, Object>> contactosActuales = (List<Map<String, Object>>) documentSnapshot.get("Contacto Emergencia");
+                        if (contactosActuales.size() <=0) {
+                            Toast.makeText(RegistrarseContactoActivity.this,"Ingrese por lo menos 1 Contacto de Emergencia", Toast.LENGTH_SHORT).show();
+                        }else{
+                            //MANDAR A OTRA VISTA
+                            Toast.makeText(RegistrarseContactoActivity.this,"Se Ha Creado un Usuario", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegistrarseContactoActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(RegistrarseContactoActivity.this, "Error Vuelva a intentarlo", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     public boolean validar(){
         String nombre = txtnombreContacto.getText().toString().trim();
         String telefono = txttelefonoContacto.getText().toString().trim();
