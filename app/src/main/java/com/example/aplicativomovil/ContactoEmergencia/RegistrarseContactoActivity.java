@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class contactoEmergenciaActivity extends AppCompatActivity  implements View.OnClickListener{
+public class RegistrarseContactoActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private Button btnGuardar;
     //VARIABLE FIREBASE
@@ -63,10 +63,10 @@ public class contactoEmergenciaActivity extends AppCompatActivity  implements Vi
 
         //CONFIGURACION BOTON
         btnGuardar = findViewById(R.id.btnGuardar);
-        btnGuardar.setOnClickListener(contactoEmergenciaActivity.this);
+        btnGuardar.setOnClickListener(RegistrarseContactoActivity.this);
 
 
-        Toast.makeText(contactoEmergenciaActivity.this,"numero--> "+getId,Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegistrarseContactoActivity.this,"numero--> "+getId,Toast.LENGTH_SHORT).show();
 
     }
 
@@ -75,11 +75,11 @@ public class contactoEmergenciaActivity extends AppCompatActivity  implements Vi
 
         if(view.getId() == R.id.btnGuardar){
             if(!validar()){
-                Toast.makeText(contactoEmergenciaActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrarseContactoActivity.this,"Ingrese todo los valores", Toast.LENGTH_SHORT).show();
             }else{
                 btnGuardar.setEnabled(false);
 
-                Toast.makeText(contactoEmergenciaActivity.this, "id "+getId,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(contactoEmergenciaActivity.this, "id "+getId,Toast.LENGTH_SHORT).show();
 
                 //VALORES CONTACTO DE EMERGENCIA
                 String nombreContacto = txtnombreContacto.getText().toString().trim();
@@ -95,7 +95,7 @@ public class contactoEmergenciaActivity extends AppCompatActivity  implements Vi
             String getCorreo = txtcorreoContacto.getText().toString().trim();
 
             if(getNombre.isEmpty() || getTelefono.isEmpty() || getCorreo.isEmpty()){
-                Toast.makeText(contactoEmergenciaActivity.this,"Por favor ingrese todos los valores", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrarseContactoActivity.this,"Por favor ingrese todos los valores", Toast.LENGTH_SHORT).show();
             }else{
                 agregarNuevoContactoEmergencia(getId, getNombre, getTelefono,getCorreo);
                 limpiarCampos();
@@ -141,17 +141,17 @@ public class contactoEmergenciaActivity extends AppCompatActivity  implements Vi
                         db.collection("Usuarios").document(documentId)
                                 .update("Contacto Emergencia", contactosActuales)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(contactoEmergenciaActivity.this, "Contacto de emergencia agregado", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegistrarseContactoActivity.this, "Contacto de emergencia agregado", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(contactoEmergenciaActivity.this, "Error al actualizar contactos", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegistrarseContactoActivity.this, "Error al actualizar contactos", Toast.LENGTH_SHORT).show();
                                 });
                     } else {
-                        Toast.makeText(contactoEmergenciaActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrarseContactoActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(contactoEmergenciaActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrarseContactoActivity.this, "Error al obtener el documento", Toast.LENGTH_SHORT).show();
                 });
     }
     public void limpiarCampos(){

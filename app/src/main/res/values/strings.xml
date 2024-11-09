@@ -26,11 +26,13 @@
     <string name="hint_registrarse">Registrarse</string>
 
     <!-- RESTAURAR CONTRASENA -->
+    <string name="hint_cambiarContrasena">Cambiar Contraseña</string>
     <string name="hint_nuevaContrasena">Escriba Nueva Contraseña</string>
     <string name="hint_confirNuevaContrasena">Vuelva ha Escribir Contraseña</string>
     <string name="hint_aceptar">Aceptar</string>
 
     <!--CONTACTO EMERGENCIA -->
     <string name="hint_agregarContacto">Agregar Nuevo Contacto</string>
+    <string name="hint_listaContacto">Lista Contacto</string>
 
 </resources>

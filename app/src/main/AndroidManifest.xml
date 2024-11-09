@@ -23,13 +23,13 @@
             android:name=".restaurarContrasenaActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactoEmergencia.contactoEmergenciaActivity"
+            android:name=".ContactoEmergencia.RegistrarseContactoActivity"
             android:exported="false" />
         <activity
             android:name=".homeActivity"
             android:exported="false" />
         <activity
-            android:name=".ListarUsuariosActivity"
+            android:name=".ContactoEmergencia.ListarUsuariosActivity"
             android:exported="false" />
         <activity
             android:name=".IniciarSesionActivity"
@@ -54,7 +54,7 @@
             android:value="AIzaSyAmdJnj0OsE8Ljt7zZ1asfzWILEniOaELQ" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Mapa.MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity

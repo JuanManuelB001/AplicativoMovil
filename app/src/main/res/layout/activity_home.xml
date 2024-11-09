@@ -35,24 +35,24 @@
 
     <Button
         android:id="@+id/btnRestaurarContrasena"
+        android:hint="@string/hint_RestaurarContrasena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMapa" />
 
     <Button
-        android:id="@+id/btnUsuario"
+        android:id="@+id/btnListaContactos"
+        android:hint="@string/hint_listaContacto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:text="Usuario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRestaurarContrasena" />

@@ -16,7 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.aplicativomovil.ContactoEmergencia.contactoEmergenciaActivity;
+import com.example.aplicativomovil.ContactoEmergencia.RegistrarseContactoActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -177,7 +177,7 @@ public class registrarse extends AppCompatActivity implements View.OnClickListen
                         @Override
                         public void onSuccess(Void aVoid) {
                             //Toast.makeText(registrarse.this, "Se ha registrado el Usuario", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(registrarse.this, contactoEmergenciaActivity.class);
+                            Intent intent = new Intent(registrarse.this, RegistrarseContactoActivity.class);
                             btnguardar.setEnabled(true);
                             intent.putExtra("id", documentId);
                             startActivity(intent);

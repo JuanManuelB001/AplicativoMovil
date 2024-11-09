@@ -7,4 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ContactoEmergencia.agregarContactoEmergencia">
 
+    <include
+        layout="@layout/activity_contanco_emergencia"></include>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

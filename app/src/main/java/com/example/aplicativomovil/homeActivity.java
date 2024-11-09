@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.aplicativomovil.ContactoEmergencia.ListarUsuariosActivity;
+import com.example.aplicativomovil.Mapa.MapsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class homeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,7 +38,7 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         btnrestaurarContrasena.setOnClickListener(this);
 
         //BOTON USUARIO
-        btnusuario = findViewById(R.id.btnUsuario);
+        btnusuario = findViewById(R.id.btnListaContactos);
         btnusuario.setOnClickListener(this);
 
         //FIREBASE AUTHENTIFICATION
@@ -55,9 +56,9 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
             intent = new Intent(homeActivity.this, restaurarContrasenaActivity.class);
             startActivity(intent);
 
-        }else if(view.getId() == R.id.btnUsuario){
-            Toast.makeText(homeActivity.this, "Us "+auth, Toast.LENGTH_SHORT).show();
-            System.out.println("hola mundo");
+        }else if(view.getId() == R.id.btnListaContactos){
+            intent = new Intent(homeActivity.this, ListarUsuariosActivity.class);
+            startActivity(intent);
         }
     }
 }
