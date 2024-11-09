@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class homeActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnmapa,btnrestaurarContrasena;
     private Button btnusuario;
+    private Button btnConecDIs;
+
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,10 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         btnusuario = findViewById(R.id.btnListaContactos);
         btnusuario.setOnClickListener(this);
 
+        //BOTON CONEXION BLUETOOTH
+        btnConecDIs = findViewById(R.id.btnConecDIs);
+        btnConecDIs.setOnClickListener(homeActivity.this);
+
         //FIREBASE AUTHENTIFICATION
         mAuth= FirebaseAuth.getInstance();
     }
@@ -55,7 +61,9 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         }else if(view.getId() == R.id.btnRestaurarContrasena){
             intent = new Intent(homeActivity.this, restaurarContrasenaActivity.class);
             startActivity(intent);
-
+        }else if(view.getId() == R.id.btnConecDIs){
+            intent = new Intent(homeActivity.this, bluetoothConexion.class);
+            startActivity(intent);
         }else if(view.getId() == R.id.btnListaContactos){
             intent = new Intent(homeActivity.this, ListarUsuariosActivity.class);
             startActivity(intent);
