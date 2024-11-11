@@ -57,8 +57,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation(libs.firebase.database)
     implementation(libs.play.services.location)
+    implementation(libs.firebase.messaging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(kotlin("script-runtime"))
 }
