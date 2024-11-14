@@ -13,12 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.aplicativomovil.ContactoEmergencia.ListarUsuariosActivity;
 import com.example.aplicativomovil.Mapa.MapsActivity;
+import com.example.aplicativomovil.Message.messageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class homeActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnmapa,btnrestaurarContrasena;
     private Button btnusuario;
     private Button btnConecDIs;
+    private Button btnmensaje;
 
     private FirebaseAuth mAuth;
     @Override
@@ -47,6 +49,10 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         btnConecDIs = findViewById(R.id.btnConecDIs);
         btnConecDIs.setOnClickListener(homeActivity.this);
 
+        //BOTON MENSAJE
+        btnmensaje = findViewById(R.id.btnMensaje);
+        btnmensaje.setOnClickListener(homeActivity.this);
+
         //FIREBASE AUTHENTIFICATION
         mAuth= FirebaseAuth.getInstance();
     }
@@ -67,6 +73,12 @@ public class homeActivity extends AppCompatActivity implements View.OnClickListe
         }else if(view.getId() == R.id.btnListaContactos){
             intent = new Intent(homeActivity.this, ListarUsuariosActivity.class);
             startActivity(intent);
+        }else if(view.getId() == R.id.btnMensaje){
+            /*
+            intent = new Intent(homeActivity.this, messageActivity.class);
+            startActivity(intent);
+             */
+
         }
     }
 }
