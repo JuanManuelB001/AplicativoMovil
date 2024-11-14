@@ -1,89 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/inicio2"
     tools:context=".IniciarSesionActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="119dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:contentDescription="@string/todo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login" />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@color/black"
+       android:alpha="0.7"
 
-    <EditText
-        android:id="@+id/txtUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/usuario"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+       >
 
-    <EditText
-        android:id="@+id/txtCon"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/contrase_a"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUsuario" />
+       <androidx.cardview.widget.CardView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           app:cardCornerRadius="20dp"
+           android:layout_marginBottom="50dp"
 
-    <Button
-        android:id="@+id/btnIniciarSesion"
-        android:hint="@string/hint_iniciarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCon" />
+           >
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               >
+               <ImageView
+                   android:id="@+id/imageView2"
+                   android:layout_width="119dp"
+                   android:layout_height="101dp"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
 
-    <Button
-        android:id="@+id/btnRegistrarse"
-        android:hint="@string/hint_registrarse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRestaurarContrasena" />
+                   app:srcCompat="@drawable/login" />
 
-    <Button
-        android:id="@+id/btnRestaurarContrasena"
-        android:hint="@string/hint_RestaurarContrasena"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
+               <EditText
+                   android:id="@+id/txtUsuario"
+                   android:layout_width="match_parent"
+                   android:layout_height="48dp"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
+                   android:hint="@string/usuario"
+                   android:ems="10"
+                   android:drawableEnd="@drawable/check_icon"
+                   android:inputType="textEmailAddress"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+               <EditText
+                   android:id="@+id/txtCon"
+                   android:layout_width="match_parent"
+                   android:layout_height="48dp"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
+                   android:hint="@string/contrase_a"
+                   android:ems="10"
+                   android:drawableEnd="@drawable/remove"
+                   android:inputType="textPassword"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/txtUsuario" />
+
+               <Button
+                   android:id="@+id/btnIniciarSesion"
+                   android:hint="@string/hint_iniciarSesion"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.497"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/txtCon" />
+
+               <Button
+                   android:id="@+id/btnRegistrarse"
+                   android:hint="@string/hint_registrarse"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/btnRestaurarContrasena" />
+
+               <Button
+                   android:id="@+id/btnRestaurarContrasena"
+                   android:hint="@string/hint_RestaurarContrasena"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="32dp"
+                   android:layout_marginTop="32dp"
+                   android:layout_marginEnd="32dp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
+
+           </LinearLayout>
+
+       </androidx.cardview.widget.CardView>
+
+
+   </RelativeLayout>
+
+
+
+</RelativeLayout>
